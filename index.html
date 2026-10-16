@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StayDesk — Demo PMS</title>
+<meta name="description" content="StayDesk demo PMS — sample data only, not connected to any real hotel system.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./styles.css">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1E293B">
+</head>
+<body>
+<div class="demo-banner">DEMO — sample data only, not connected to any real hotel system.</div>
+<header class="topbar">
+<button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">&#9776;</button>
+<div class="logo"><span class="logo-mark" aria-hidden="true">S</span><span>StayDesk <span style="font-weight:400;color:#64748B">Demo PMS</span></span></div>
+<span class="property" id="propertyLabel">Harbor View Hotel (Demo)</span>
+<span class="topbar-spacer"></span>
+<span class="today-label" id="todayLabel"></span>
+<button class="btn small" id="topNewBtn">New Reservation</button>
+</header>
+<div class="layout">
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+<nav>
+<button class="nav-btn active" data-view="dashboard" aria-label="Go to Dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/></svg>Dashboard</button>
+<button class="nav-btn" data-view="frontdesk" aria-label="Go to Front Desk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10"/></svg>Front Desk</button>
+<button class="nav-btn" data-view="rooms" aria-label="Go to Rooms"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>Rooms</button>
+<button class="nav-btn" data-view="housekeeping" aria-label="Go to Housekeeping"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5-5 5 5M9 7v10"/><path d="M14 12h6M14 16h6M14 20h6"/></svg>Housekeeping</button>
+<button class="nav-btn" data-view="billing" aria-label="Go to Billing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>Billing</button>
+<button class="nav-btn" data-view="guests" aria-label="Go to Guests"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><path d="M16 5a3 3 0 0 1 0 6M17 14c2 0 4 1.5 4 4"/></svg>Guests</button>
+<button class="nav-btn" data-view="reports" aria-label="Go to Reports"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15v-4M12 15V7M17 15v-6"/></svg>Reports</button>
+<button class="nav-btn" data-view="settings" aria-label="Go to Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings</button>
+</nav>
+<div class="sidebar-note"><strong>Demo only.</strong><br>All guests, rooms and payments are fictional sample data stored in this browser only.</div>
+</aside>
+<main class="main">
+<!-- DASHBOARD -->
+<section class="view active" id="view-dashboard">
+<div class="view-head"><div><h1>Dashboard</h1><p id="dashSubtitle">Today snapshot</p></div><button class="btn primary" data-action="new-reservation">New Reservation</button></div>
+<div class="stats" id="dashStats"></div>
+<div class="grid-2">
+<div class="card"><h3>Quick actions</h3><div class="quick-actions"><button class="btn primary" data-action="new-reservation">New Reservation</button><button class="btn" data-action="goto-frontdesk">Check-In</button><button class="btn" data-action="goto-rooms">Room Grid</button><button class="btn" data-action="goto-housekeeping">Housekeeping</button><button class="btn" data-action="goto-billing">Billing</button></div><p class="muted small mt">Check-In opens Front Desk filtered to Arriving Today.</p></div>
+<div class="card"><h3>Recent activity</h3><ul class="activity" id="activityFeed"></ul></div>
+</div>
+</section>
+<!-- FRONT DESK -->
+<section class="view" id="view-frontdesk">
+<div class="view-head"><div><h1>Front Desk</h1><p>Search and manage reservations.</p></div><div><button class="btn" data-action="new-walkin">Walk-In</button> <button class="btn primary" data-action="new-reservation">New Reservation</button></div></div>
+<div class="toolbar"><input class="search" id="fdSearch" type="search" placeholder="Search by guest name, confirmation, or room…" aria-label="Search reservations"><div class="filters" id="fdFilters"></div></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Confirmation</th><th>Guest</th><th>Dates</th><th>Room</th><th>Type</th><th>Status</th><th>Balance</th></tr></thead><tbody id="fdRows"></tbody></table></div><div class="empty" id="fdEmpty" style="display:none">No reservations match your search.</div></div>
+</section>
+<!-- ROOMS -->
+<section class="view" id="view-rooms">
+<div class="view-head"><div><h1>Rooms / Tape Chart</h1><p id="roomsSubtitle">All rooms</p></div><button class="btn" data-action="goto-frontdesk">New Reservation</button></div>
+<div class="card"><div id="occSummary"></div><div class="occ-bar"><div class="occ-fill" id="occFill" style="width:0%"></div></div></div>
+<div class="toolbar mt"><div class="filters" id="roomStatusFilters"></div><div class="filters" id="roomTypeFilters"></div></div>
+<div class="rooms-grid" id="roomsGrid"></div>
+</section>
+<!-- HOUSEKEEPING -->
+<section class="view" id="view-housekeeping">
+<div class="view-head"><div><h1>Housekeeping</h1><p id="hkSubtitle">Tasks by status</p></div><button class="btn primary" id="assignAllBtn">Assign all vacant-dirty</button></div>
+<div class="toolbar"><label class="small">Filter by staff: <select id="hkStaffFilter"><option value="All">All staff</option><option value="Alex">Alex</option><option value="Maria">Maria</option><option value="Jordan">Jordan</option></select></label><button class="btn small" id="hkNewTaskBtn">New Task</button></div>
+<div class="hk-groups" id="hkGroups"></div>
+</section>
+<!-- BILLING -->
+<section class="view" id="view-billing">
+<div class="view-head"><div><h1>Billing / Folios</h1><p>In-house and checked-out folios.</p></div></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Confirmation</th><th>Guest</th><th>Room</th><th>Status</th><th>Total</th><th>Paid</th><th>Balance</th></tr></thead><tbody id="billingRows"></tbody></table></div><div class="empty" id="billingEmpty" style="display:none">No folios yet.</div></div>
+</section>
+<!-- GUESTS -->
+<section class="view" id="view-guests">
+<div class="view-head"><div><h1>Guests</h1><p>Guest directory from reservations.</p></div></div>
+<div class="toolbar"><input class="search" id="guestSearch" type="search" placeholder="Search guests…" aria-label="Search guests"></div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Guest</th><th>Phone</th><th>Email</th><th>Stays</th><th>Total spent</th><th>Notes</th></tr></thead><tbody id="guestRows"></tbody></table></div><div class="empty" id="guestEmpty" style="display:none">No guests found.</div></div>
+</section>
+<!-- REPORTS -->
+<section class="view" id="view-reports">
+<div class="view-head"><div><h1>Reports</h1><p>Computed from current demo data.</p></div><button class="btn" id="reportsRefreshBtn">Refresh</button></div>
+<div class="grid-2"><div class="card"><h3>Occupancy — next 7 days</h3><div id="occReport"></div></div><div class="card"><h3>Arrivals / Departures</h3><div id="arrDepReport"></div></div></div>
+<div class="grid-2 mt"><div class="card"><h3>Housekeeping completion</h3><div id="hkReport"></div></div><div class="card"><h3>Revenue</h3><div id="revReport"></div></div></div>
+</section>
+<!-- SETTINGS -->
+<section class="view" id="view-settings">
+<div class="view-head"><div><h1>Settings</h1><p>Demo defaults are editable and saved in this browser.</p></div></div>
+<div class="card"><div class="form-grid">
+<div class="field"><label for="setProperty">Property name</label><input id="setProperty" type="text"></div>
+<div class="field"><label for="setTax">Tax % (demo default)</label><input id="setTax" type="number" min="0" max="30" step="0.1"></div>
+<div class="field"><label for="setKing">King rate ($)</label><input id="setKing" type="number" min="0" step="1"></div>
+<div class="field"><label for="setDQ">Double Queen rate ($)</label><input id="setDQ" type="number" min="0" step="1"></div>
+<div class="field"><label for="setSuite">Suite rate ($)</label><input id="setSuite" type="number" min="0" step="1"></div>
+</div><div class="row-actions mt"><button class="btn primary" id="saveSettingsBtn">Save Settings</button><button class="btn" id="exportBtn">Export Data (JSON)</button><button class="btn" id="resetBtn">Reset Demo Data</button><button class="btn danger" id="clearBtn">Clear All</button></div><p class="muted small mt">Reset restores the original sample data. Clear All empties all data — use Reset to bring the sample back.</p></div>
+</section>
+</main>
+</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-label="Detail panel"><div class="drawer-head"><h2 id="drawerTitle">Details</h2><button class="icon-btn" id="drawerCloseBtn" aria-label="Close detail panel">&times;</button></div><div id="drawerContent"></div></aside>
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Dialog</h2><button class="icon-btn" id="modalCloseBtn" aria-label="Close dialog">&times;</button></div><div id="modalContent"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="print-area" id="printArea"></div>
+<script src="./data.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
